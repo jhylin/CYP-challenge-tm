@@ -1,8 +1,8 @@
 # Tsetlin Machine feature net regressors for OpenADMET CYP Blind Challenge
 
-**Work-in-progress**
+*Updates in progress*
 
-This repository provides predicted pIC50 values for four cytochrome P450 (CYP) isoforms using a **Tsetlin machine (TM) feature net** approach by training auxiliary TMs on three related open datasets - two provided by OpenADMET (auxiliary dataset A & B) and one provided by Peteani G. et al. from this [paper](https://doi.org/10.1038/s41467-024-49979-3) by using its supplementary data (auxiliary dataset C). The auxiliary TMs turn the predictions into extra Boolean inputs for a main TM to use to predict on a test set.
+This repository provides predicted pIC50 values for four cytochrome P450 (CYP) isoforms using a **Tsetlin machine (TM) feature net** approach by training auxiliary TMs on three related open datasets - two provided by OpenADMET (auxiliary dataset A & B) and one provided by Peteani G. et al. from this open-access [paper](https://doi.org/10.1038/s41467-024-49979-3) by using its supplementary data (auxiliary dataset C). The auxiliary TMs turn the predictions into extra Boolean inputs for a main TM to use to predict on a test set.
 
 ---
 
@@ -26,7 +26,7 @@ This repository provides predicted pIC50 values for four cytochrome P450 (CYP) i
 - **Inputs:** ECFP fingerprints (radius = 3, size = 2048 bits) from canonical SMILES.
 - **Model:** one `TMRegressor` (tmu) per isoform, trained on ECFP bits plus features produced by auxiliary TMs.
 - **Auxiliary data:** three open datasets (A, B, C) of related measurements; see [Data](#data).
-- **Baseline:** random forest on the same fingerprints and splits ([**TODO: notebook name**]).
+- **Baseline:** random forest on the same fingerprints and splits - *pending*.
 - **Why a TM:** predictions come from human-readable AND rules over fingerprint bits and auxiliary features.
 
 ## Repository structure
@@ -34,14 +34,13 @@ This repository provides predicted pIC50 values for four cytochrome P450 (CYP) i
 ```
 .
 ├── notebooks/
-│   ├── 10_from_scratch_tm_reg_featurenet.ipynb   # main notebook (feature net, aux A, B and C)
-│   └── [**TODO: RF baseline notebook, if included**]
+│   ├── featurenet_tm_regressor.ipynb             # main notebook (feature net, aux A, B and C)
 ├── data/                                         # input CSVs (DATA_DIR)
-│   ├── main_train.csv
-│   ├── aux_A.csv
-│   ├── aux_B.csv
-│   ├── aux_C.csv
-│   └── test.csv
+│   ├── train_df_trim.csv (main)
+│   ├── train_single_trim.csv (aux A)
+│   ├── train_emax_trim.csv (aux B)
+│   ├── train_surrogate_cyp.csv (aux C)
+│   └── test_df.csv (test)
 ├── outputs/                                      # created on first run, not tracked (OUTPUT_DIR)
 ├── pixi.toml / pixi.lock                         # pinned environment
 ├── LICENSE
@@ -53,8 +52,8 @@ This repository provides predicted pIC50 values for four cytochrome P450 (CYP) i
 Requires [pixi](https://pixi.sh) and a C compiler (tmu builds a C extension).
 
 ```bash
-git clone https://github.com/[TODO: owner]/[TODO: repo].git
-cd [TODO: repo]
+git clone https://github.com/jhylin/CYP-challenge-tm.git
+cd CYP-challenge-tm
 pixi install
 ```
 
@@ -68,15 +67,15 @@ pixi run python -c "from tmu.models.regression.vanilla_regressor import TMRegres
 
 ## Data
 
-All datasets are open. **[TODO: confirm each licence allows redistribution; otherwise replace files with download instructions.]**
+All datasets are open-source. 
 
-| File | Content | Molecules | Source | Licence |
+| File | Content | Molecules | Source | 
 | --- | --- | --- | --- | --- |
-| `main_train.csv` | SMILES + pIC50 for 4 isoforms (wide; sparse) | [TODO] | [TODO] | [TODO] |
-| `aux_A.csv` | SMILES + isoform + 2 lab values (long) | 4,376 | [TODO] | [TODO] |
-| `aux_B.csv` | SMILES + 4 related measurements (wide) | 6,145 | [TODO] | [TODO] |
-| `aux_C.csv` | SMILES + pIC50 for 3 of the 4 isoforms (wide) | 273,706 | [TODO] | [TODO] |
-| `test.csv` | Name + SMILES (unlabelled) | [TODO] | [TODO] | [TODO] |
+| `train_df_trim.csv` | SMILES + pIC50 for 4 isoforms (wide; sparse) | 4,905 | OpenADMET & Octant | 
+| `train_single_trim.csv` | SMILES + isoform + 2 lab values (long) | 4,376 | OpenADMET & Octant | 
+| `train_emax_trim.csv` | SMILES + 4 related measurements (wide) | 6,145 | OpenADMET & Octant | 
+| `train_surrogate_cyp.csv` | SMILES + pIC50 for 3 of the 4 isoforms (wide) | 273,706 | [Peteani G. et al.](https://doi.org/10.1038/s41467-024-49979-3) | 
+| `test_df.csv` | Name + SMILES (unlabelled) | 750 | OpenADMET & Octant | 
 
 ## Method
 
@@ -114,5 +113,3 @@ pixi run papermill notebooks/featurenet_tm_regressor.ipynb outputs/run.ipynb \
 - `featurenet_3aux_pipeline.pkl`: full pipeline to be saved if needed (`SAVE_PIPELINE = True`).
 
 **Quick smoke test**: set all epochs to 1 and `AUX_CACHE = None`, then run.
-
-**Acknowledgement**:
