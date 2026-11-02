@@ -70,7 +70,7 @@ pixi run python -c "from tmu.models.regression.vanilla_regressor import TMRegres
 All datasets are open-source. 
 
 | File | Content | Molecules | Source | 
-| --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | 
 | `train_df_trim.csv` | SMILES + pIC50 for 4 isoforms (wide; sparse) | 4,905 | OpenADMET & Octant | 
 | `train_single_trim.csv` | SMILES + isoform + 2 lab values (long) | 4,376 | OpenADMET & Octant | 
 | `train_emax_trim.csv` | SMILES + 4 related measurements (wide) | 6,145 | OpenADMET & Octant | 
