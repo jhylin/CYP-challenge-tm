@@ -1,0 +1,23 @@
+# pixi environments
+.pixi/*
+!.pixi/config.toml
+
+# Run outputs (rebuildable; may contain local paths)
+outputs/
+*.pkl
+*_run.ipynb
+*.nbconvert.ipynb
+run.log
+*.log
+test_predictions_*.csv
+
+# Jupyter / Python clutter
+.ipynb_checkpoints/
+__pycache__/
+
+# Notebooks (dev versions)
+10.8_featurenet_run_3aux_epo50_ks_new_ts_results.ipynb
+1_featurenet_test_nb10.8.ipynb
+
+# README.md draft
+README_draft.md

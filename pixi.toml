@@ -1,0 +1,26 @@
+[workspace]
+channels = ["conda-forge"]
+name = "CYP-challenge-tm"
+platforms = ["linux-64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
+python = "==3.12.14"
+rdkit = "==2025.9.5"
+numpy = "==2.5.2"
+pandas = "==2.3.3"
+scikit-learn = "==1.9.0"
+scipy = "==1.18.0"
+matplotlib = ">=3.11.2,<4"
+seaborn = "==0.13.2"
+optuna = "==4.9.0"
+joblib = "==1.6.0"
+jupyter = ">=1.1.1,<2"
+papermill = ">=2.7.0,<3"
+chembl_structure_pipeline = "==1.2.4"
+
+[pypi-dependencies]
+tmu = { git = "https://github.com/cair/tmu.git", rev = "5d6d9da7d3e8c3a15e40f93b94ec882db518c57c" }
+tm-qsar-benchmark = { url = "https://github.com/PaulC61/TM-QSAR-Benchmark/archive/5863185a382973cff258b7c4818a113dd23f13a1.zip" }
